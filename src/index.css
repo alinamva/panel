@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  li {
+    display: flex;
+    gap: 1rem;
+  }
+}
