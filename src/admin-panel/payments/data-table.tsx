@@ -1,11 +1,8 @@
 import {
   ColumnDef,
-  // ColumnFiltersState,
   SortingState,
-  // VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -20,44 +17,39 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { TrashIcon } from "@radix-ui/react-icons";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  handleDelete: () => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  handleDelete,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-  //   []
-  // );
-  // const [columnVisibility, setColumnVisibility] =
-  //   React.useState<VisibilityState>({});
-  // const [rowSelection, setRowSelection] = React.useState({});
+
+  // console.log(data);
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
-    // onColumnFiltersChange: setColumnFilters,
+
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    // onColumnVisibilityChange: setColumnVisibility,
-    // onRowSelectionChange: setRowSelection,
+
     state: {
       sorting,
-      // columnFilters,
-      // columnVisibility,
-      // rowSelection,
     },
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border ">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -88,7 +80,16 @@ export function DataTable<TData, TValue>({
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
-                ))}
+                ))}{" "}
+                <TableCell>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDelete(row.id)}
+                    size="sm"
+                  >
+                    <TrashIcon />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
@@ -103,6 +104,24 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

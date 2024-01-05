@@ -6,14 +6,14 @@ import products from "../assets/products.svg";
 import { Link } from "react-router-dom";
 const SideBar = () => {
   const Navs = [
-    { name: "Dashboard", icon: dashboard, link: "/products" },
-    { name: "Products", icon: products, link: "/products" },
-    { name: "Chat", icon: chat, link: "/products" },
-    { name: "Email", icon: email, link: "/products" },
-    { name: "Settings", icon: settings, link: "/products" },
+    { name: "Dashboard", icon: dashboard, link: "/panel" },
+    { name: "Products", icon: products, link: "/panel" },
+    { name: "Chat", icon: chat, link: "/panel" },
+    { name: "Email", icon: email, link: "/panel" },
+    { name: "Settings", icon: settings, link: "/panel" },
   ];
   return (
-    <div className="h-dvh bg-midnightBlue w-80 p-8 flex flex-col gap-8 text-mainText ">
+    <div className="h-dvh bg-midnightBlue w-full p-8 flex flex-col gap-8 text-mainText ">
       <h2>Admin.</h2>
       <ul>
         {Navs.map((nav, index) => (

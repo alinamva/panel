@@ -1,22 +1,18 @@
-import axios from "axios";
+// import { IData } from "@/store";
+import { IData } from "@/store";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import useSWR from "swr";
 
-export default function ProductsDataTable() {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-  const { data, error, isLoading } = useSWR(
-    "https://fakestoreapi.com/products?sort=desc",
-    fetcher
-  );
-  if (error) console.log("error");
-  if (isLoading) console.log("Loading ...");
-  console.log(data);
+export default function ProductsDataTable({
+  storedData,
+  handleDelete,
+}: Pick<IData, "storedData" | "handleDelete">) {
   return (
-    <div className="container mx-auto py-10 bg-white">
+    <div className="container mx-auto  bg-white">
       <DataTable
         columns={columns}
-        data={data}
+        data={storedData}
+        handleDelete={(productId: string) => handleDelete(productId)}
       />
     </div>
   );

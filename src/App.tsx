@@ -3,7 +3,6 @@ import useSWR from "swr";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as React from "react";
 import Panel from "./admin-panel";
-import Products from "./admin-panel/products";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -14,17 +13,16 @@ function App() {
   );
   if (error) return "Error";
   if (isLoading) return "Loading ...";
-  console.log(data);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Panel />,
+      element: <Panel data={data} />,
       children: [
         {
           index: true,
-          path: "/products",
-          element: <Products />,
+          path: "/panel",
+          element: <Panel data={data} />,
         },
       ],
     },
