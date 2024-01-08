@@ -8,36 +8,51 @@ export interface IProduct {
 export interface IData {
   data: IProduct[];
   storedData: IProduct[];
+  deletedData: IProduct[];
   handleDelete: (productId: string) => void;
 }
 
 export interface IStore {
   data: IProduct[];
+  deletedData: IProduct[];
   setData: (data: IProduct[]) => void;
-  setStoredData: (storedData: IData) => void;
   deleteProduct: (productId: string) => void;
 }
 const useStore = create<IStore>((set) => {
   const storedData = localStorage.getItem("data");
   const initialData = storedData ? JSON.parse(storedData) : [];
-
-  const updateLocalStorage = (newData: IProduct[]) => {
-    localStorage.setItem("data", JSON.stringify(newData));
-  };
+  const deletedData = localStorage.getItem("deletedData")
+    ? JSON.parse(localStorage.getItem("deletedData")!)
+    : [];
   return {
     data: initialData,
+    deletedData: deletedData,
     setData: (newData) => {
-      set({ data: newData });
-      localStorage.setItem("data", JSON.stringify(newData));
+      set((state) => {
+        localStorage.setItem("data", JSON.stringify(newData));
+        return { ...state, data: newData };
+      });
     },
-    setStoredData: (storedData: IData) => set(storedData),
     deleteProduct: (productId: string) => {
       set((state) => {
         const updatedData = state.data.filter(
           (product) => product.id !== productId
         );
-        updateLocalStorage(updatedData);
+        localStorage.setItem("data", JSON.stringify(updatedData));
         return { data: updatedData };
+        // const deletedProduct = state.data.find(
+        //   (product) => product.id === productId
+        // );
+        // // if (deletedProduct) {
+        // set({
+        //   deletedData: [...state.deletedData, deletedProduct],
+        // });
+        // localStorage.setItem(
+        //   "deletedData",
+        //   JSON.stringify([...state.deletedData, deletedProduct])
+        // );
+        // // }
+        // return { ...state };
       });
     },
   };

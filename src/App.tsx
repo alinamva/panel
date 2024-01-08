@@ -4,7 +4,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import * as React from "react";
 import Panel from "./admin-panel";
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+const fetcher = async (url: string) => {
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 function App() {
   const { data, error, isLoading } = useSWR(
@@ -13,7 +21,6 @@ function App() {
   );
   if (error) return "Error";
   if (isLoading) return "Loading ...";
-
   const router = createBrowserRouter([
     {
       path: "/",

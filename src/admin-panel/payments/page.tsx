@@ -12,7 +12,7 @@ export default function ProductsDataTable({
       <DataTable
         columns={columns}
         data={storedData}
-        handleDelete={(productId: string) => handleDelete(productId)}
+        handleDelete={handleDelete}
       />
     </div>
   );

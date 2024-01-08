@@ -7,7 +7,8 @@ import ProductsDataTable from "./payments/page";
 const Products = ({
   storedData,
   handleDelete,
-}: Pick<IData, "storedData" | "handleDelete">) => {
+  deletedData,
+}: Pick<IData, "storedData" | "handleDelete" | "deletedData">) => {
   // const data = useStore((state) => state.data);
   // console.log(data);
   // const { setProducts } = useStore();
@@ -76,7 +77,7 @@ const Products = ({
               </svg>
             </div>
             <div>
-              <h3>533</h3>
+              <h3>{storedData.length}</h3>
               <p className="text-sm text-black/50">Total Products</p>
             </div>
           </div>
@@ -98,7 +99,7 @@ const Products = ({
               </svg>
             </div>
             <div>
-              <h3>533</h3>
+              <h3>{deletedData.length}</h3>
               <p className="text-sm text-black/50">Deleted Products</p>
             </div>
           </div>
@@ -121,7 +122,7 @@ const Products = ({
             </div>
             <div>
               <h3>533</h3>
-              <p className="text-sm text-black/50">Total Products</p>
+              <p className="text-sm text-black/50">Out of stock </p>
             </div>
           </div>
           <div className="w-full bg-white h-28 rounded-xl flex justify-center gap-3 items-center">
@@ -143,7 +144,7 @@ const Products = ({
             </div>
             <div>
               <h3>533</h3>
-              <p className="text-sm text-black/50">Total Products</p>
+              <p className="text-sm text-black/50">Sold</p>
             </div>
           </div>
         </div>

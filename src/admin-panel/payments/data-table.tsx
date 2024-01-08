@@ -7,7 +7,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -23,7 +22,7 @@ import { TrashIcon } from "@radix-ui/react-icons";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  handleDelete: () => void;
+  handleDelete: (id: number) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -33,16 +32,13 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
-  // console.log(data);
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
-
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-
     state: {
       sorting,
     },
@@ -80,11 +76,14 @@ export function DataTable<TData, TValue>({
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
-                ))}{" "}
+                ))}
                 <TableCell>
                   <Button
                     variant="destructive"
-                    onClick={() => handleDelete(row.id)}
+                    onClick={() => {
+                      const productId = data[row.index].id;
+                      handleDelete(productId);
+                    }}
                     size="sm"
                   >
                     <TrashIcon />
@@ -104,7 +103,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-center space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
