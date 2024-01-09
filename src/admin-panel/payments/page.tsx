@@ -1,18 +1,15 @@
-// import { IData } from "@/store";
-import { IData } from "@/store";
+import { IDataProps } from "@/Types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function ProductsDataTable({
   storedData,
-  handleDelete,
-}: Pick<IData, "storedData" | "handleDelete">) {
+}: Pick<IDataProps, "storedData">) {
   return (
     <div className="container mx-auto  bg-white">
       <DataTable
         columns={columns}
-        data={storedData}
-        handleDelete={handleDelete}
+        storedData={storedData}
       />
     </div>
   );

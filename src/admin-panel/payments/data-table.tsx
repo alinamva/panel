@@ -15,25 +15,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "@radix-ui/react-icons";
+import { useStore } from "@/store";
+import { IProduct } from "@/Types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  handleDelete: (id: number) => void;
+  storedData: IProduct[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
-  handleDelete,
+  storedData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
-    data,
+    data: storedData,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -43,6 +43,7 @@ export function DataTable<TData, TValue>({
       sorting,
     },
   });
+  const { deleteProduct } = useStore();
 
   return (
     <div className="rounded-md border ">
@@ -81,8 +82,8 @@ export function DataTable<TData, TValue>({
                   <Button
                     variant="destructive"
                     onClick={() => {
-                      const productId = data[row.index].id;
-                      handleDelete(productId);
+                      const productId = row.original.id;
+                      deleteProduct(productId);
                     }}
                     size="sm"
                   >

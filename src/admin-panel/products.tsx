@@ -1,28 +1,19 @@
-// import { useStore } from "../store";
-import { IData } from "@/store";
+import { IDataProps } from "@/Types";
 import ProductsDataTable from "./payments/page";
-// import { IProduct, useStore } from "@/store";
-// import { useEffect } from "react";
+import { useStore } from "@/store";
+import React from "react";
 
-const Products = ({
-  storedData,
-  handleDelete,
-  deletedData,
-}: Pick<IData, "storedData" | "handleDelete" | "deletedData">) => {
-  // const data = useStore((state) => state.data);
-  // console.log(data);
-  // const { setProducts } = useStore();
-  // const storedData = [...data, ...data];
-  // useEffect(() => {
-  //   setProducts(storedData);
-  //   setProducts(storedData);
-  // }, [data, setProducts]);
-  // console.log(storedData);
+const Products = ({ apiData }: Pick<IDataProps, "apiData">) => {
+  const { data: storedData, setData, deletes } = useStore();
+  React.useEffect(() => {
+    if (apiData) {
+      setData(apiData);
+    }
+  }, [apiData, setData]);
   return (
     <div className="w-full h-dvh bg-lightGrey text-midnightBlue flex flex-col ">
       <div className="flex justify-between bg-white p-8">
         <h2>Products</h2>
-
         <div className="flex gap-4">
           <div className="cursor-pointer">
             <svg
@@ -99,7 +90,7 @@ const Products = ({
               </svg>
             </div>
             <div>
-              <h3>{deletedData.length}</h3>
+              <h3>{deletes.length}</h3>
               <p className="text-sm text-black/50">Deleted Products</p>
             </div>
           </div>
@@ -148,10 +139,7 @@ const Products = ({
             </div>
           </div>
         </div>
-        <ProductsDataTable
-          storedData={storedData}
-          handleDelete={handleDelete}
-        />
+        <ProductsDataTable storedData={storedData} />
       </div>
     </div>
   );

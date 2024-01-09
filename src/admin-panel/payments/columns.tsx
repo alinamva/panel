@@ -1,5 +1,5 @@
+import { IProduct } from "@/Types";
 import { Button } from "@/components/ui/button";
-import { IProduct } from "@/store";
 // import { Checkbox } from "@radix-ui/react-checkbox";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
