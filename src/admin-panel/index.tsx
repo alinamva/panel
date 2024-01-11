@@ -2,7 +2,7 @@ import useSWR from "swr";
 import Products from "./products";
 import SideBar from "./sideBar";
 import axios from "axios";
-
+import { Toaster } from "@/components/ui/toaster";
 const fetcher = async (url: string) => {
   try {
     const response = await axios.get(url);
@@ -14,13 +14,12 @@ const fetcher = async (url: string) => {
 };
 const Panel = () => {
   // const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const {
-    data: apiData,
-    error,
-    isLoading,
-  } = useSWR("https://fakestoreapi.com/products", fetcher);
+  const { data: apiData, error } = useSWR(
+    "https://fakestoreapi.com/products",
+    fetcher
+  );
+
   if (error) return "Error";
-  if (isLoading) return "Loading ...";
 
   // const handleDeleteBlock = () => {
   //   setIsDeleteOpen(!isDeleteOpen);
@@ -61,6 +60,7 @@ const Panel = () => {
       </div>
       <div className="flex-grow overflow-y-auto ">
         <Products apiData={apiData} />
+        <Toaster />
       </div>
     </div>
   );

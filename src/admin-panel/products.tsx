@@ -1,15 +1,23 @@
 import { IDataProps } from "@/Types";
 import ProductsDataTable from "./payments/page";
 import { useStore } from "@/store";
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import Addform from "./addForm";
 
 const Products = ({ apiData }: Pick<IDataProps, "apiData">) => {
-  const { data: storedData, setData, deletes } = useStore();
+  const { data: storedData, setData, deletes, adds } = useStore();
   React.useEffect(() => {
     if (apiData) {
       setData(apiData);
     }
   }, [apiData, setData]);
+  console.log(apiData);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
+  const handleAddBlock = () => {
+    setIsAddOpen(!isAddOpen);
+  };
   return (
     <div className="w-full h-dvh bg-lightGrey text-midnightBlue flex flex-col ">
       <div className="flex justify-between bg-white p-8">
@@ -134,11 +142,25 @@ const Products = ({ apiData }: Pick<IDataProps, "apiData">) => {
               </svg>
             </div>
             <div>
-              <h3>533</h3>
-              <p className="text-sm text-black/50">Sold</p>
+              <h3>{adds.length}</h3>
+              <p className="text-sm text-black/50">New products</p>
             </div>
           </div>
         </div>
+        <div className="w-full flex justify-end">
+          <Button
+            variant="secondary"
+            onClick={handleAddBlock}
+          >
+            Add new product
+          </Button>
+        </div>
+        {isAddOpen && (
+          <Addform
+            setIsAddOpen={setIsAddOpen}
+            storedData={storedData}
+          />
+        )}
         <ProductsDataTable storedData={storedData} />
       </div>
     </div>
