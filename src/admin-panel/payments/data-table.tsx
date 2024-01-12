@@ -7,18 +7,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import React from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/store";
-import { IProduct } from "@/Types";
+import { IProduct } from "@/types";
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -29,19 +22,12 @@ interface DataTableProps<TData, TValue> {
   storedData: IProduct[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  storedData,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, storedData }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { deleteProduct, undoDelete, adds } = useStore();
 
-  adds.forEach((product) => {
-    storedData.unshift(product);
-  });
-
   const table = useReactTable({
-    data: storedData,
+    data: [...storedData],
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -55,13 +41,13 @@ export function DataTable<TData, TValue>({
 
   const date = new Date();
 
-  let day = date.getDate();
-  let month = date.getMonth() + 1;
-  let year = date.getFullYear();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
 
-  let currentDate = `${day}-${month}-${year}`;
+  const currentDate = `${day}-${month}-${year}`;
   return (
-    <div className="rounded-md border ">
+    <div className="border rounded-md ">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -69,12 +55,7 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
               })}
@@ -84,14 +65,9 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                 ))}
                 <TableCell>
                   <Button
@@ -103,17 +79,13 @@ export function DataTable<TData, TValue>({
                         title: "The product was deleted",
                         description: currentDate.toString(),
                         action: (
-                          <ToastAction
-                            altText="Goto schedule to undo"
-                            onClick={() => undoDelete()}
-                          >
+                          <ToastAction altText="Goto schedule to undo" onClick={() => undoDelete()}>
                             Undo
                           </ToastAction>
                         ),
                       });
                     }}
-                    size="sm"
-                  >
+                    size="sm">
                     <TrashIcon />
                   </Button>
                 </TableCell>
@@ -121,31 +93,18 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="h-24 text-center"
-              >
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-center space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
+      <div className="flex items-center justify-center py-4 space-x-2">
+        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
+        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </Button>
       </div>

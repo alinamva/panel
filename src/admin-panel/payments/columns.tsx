@@ -1,4 +1,4 @@
-import { IProduct } from "@/Types";
+import { IProduct } from "@/types";
 import { Button } from "@/components/ui/button";
 // import { Checkbox } from "@radix-ui/react-checkbox";
 import { CaretSortIcon } from "@radix-ui/react-icons";
@@ -9,9 +9,7 @@ export const columns: ColumnDef<IProduct>[] = [
     accessorKey: "id",
     header: ({ column }) => {
       return (
-        <Button
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           ID
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>
@@ -23,10 +21,7 @@ export const columns: ColumnDef<IProduct>[] = [
     accessorKey: "title",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Title
           <CaretSortIcon className="ml-2 h-4 w-4" />
         </Button>

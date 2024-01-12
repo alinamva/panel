@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { IProduct, IStore } from "./Types";
+import { IProduct, IStore } from "./types";
 
 const useStore = create<IStore>((set) => {
   const deletedData = localStorage.getItem("deletedData");
@@ -13,23 +13,24 @@ const useStore = create<IStore>((set) => {
     setData: (newData) => set({ data: newData }),
     deleteProduct: (productId: number) => {
       set((state) => {
-        const deletedProduct = state.data.find(
-          (product) => product.id === productId
-        );
-        if (!deletedProduct) {
-          return state;
-        }
+        // const deletedProduct = state.data.find((product) => product.id === productId);
+        // if (!deletedProduct) {
+        //   return state;
+        // }
 
-        const updatedDeletes = [...state.deletes];
-        const updatedStore = state.data.filter(
-          (product) => product.id !== productId
-        );
-        if (!updatedDeletes.includes(deletedProduct)) {
-          updatedDeletes.push(deletedProduct);
-        }
-        localStorage.setItem("deletedData", JSON.stringify(updatedDeletes));
-        localStorage.setItem("storedData", JSON.stringify(updatedStore));
-        return { data: updatedStore, deletes: updatedDeletes };
+        // const updatedDeletes = [...state.deletes];
+        // const updatedStore = state.data.filter((product) => product.id !== productId);
+
+        // console.log(updatedStore);
+        // if (!updatedDeletes.includes(deletedProduct)) {
+        //   updatedDeletes.push(deletedProduct);
+        // }
+        // localStorage.setItem("deletedData", JSON.stringify(updatedDeletes));
+        // localStorage.setItem("storedData", JSON.stringify(updatedStore));
+        return {
+          // data: updatedStore,
+          // deletes: updatedDeletes
+        };
       });
     },
     undoDelete: () => {
@@ -38,11 +39,7 @@ const useStore = create<IStore>((set) => {
 
         if (lastDeletedProduct) {
           const updatedDeletes = [...state.deletes];
-          // const updatedStore = state.data.filter(
-          //   (product) => product.id !== productId
-          // );
           localStorage.setItem("deletedData", JSON.stringify(updatedDeletes));
-          // localStorage.setItem("storedData", JSON.stringify(updatedDeletes));
           return { deletes: updatedDeletes };
         }
         return state;
@@ -56,13 +53,19 @@ const useStore = create<IStore>((set) => {
           updatedAdds.push(newProduct);
         }
         localStorage.setItem("addedData", JSON.stringify(updatedAdds));
-        // const addedProduct = state.data.unshift(newProduct);
-        // const updatedStore = [...state.data];
-        // console.log(updatedStore.unshift(addedProduct));
-        return { adds: updatedAdds };
-        // console.log(newProduct);
+        return { adds: updatedAdds, data: updatedAdds };
       });
     },
   };
 });
-export { useStore };
+
+interface IProductStore {
+  products: IProduct[];
+  setProducts: (newProducts: IProduct[]) => void;
+}
+
+const useProductStore = create<IProductStore>((set) => ({
+  products: [],
+  setProducts: (newProducts) => set({ products: newProducts }),
+}));
+export { useStore, useProductStore };
