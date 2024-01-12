@@ -11,23 +11,23 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import React from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/store";
-import { IProduct } from "@/types";
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { IProduct } from "@/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  storedData: IProduct[];
+  storedData: TData[];
 }
 
 export function DataTable<TData, TValue>({ columns, storedData }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { deleteProduct, undoDelete, adds } = useStore();
+  const { deleteProduct, undoDelete } = useStore();
 
   const table = useReactTable({
-    data: [...storedData],
+    data: storedData,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -73,7 +73,8 @@ export function DataTable<TData, TValue>({ columns, storedData }: DataTableProps
                   <Button
                     variant="destructive"
                     onClick={() => {
-                      const productId = row.original.id;
+                      const product = row?.original as IProduct;
+                      const productId = product?.id;
                       deleteProduct(productId);
                       toast({
                         title: "The product was deleted",

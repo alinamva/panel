@@ -15,6 +15,7 @@ const Products = ({ productData }: ProductsProps) => {
   const { data: storedData, setData, deletes, adds } = useStore();
 
   useEffect(() => {
+    console.log("firstRender");
     setData(productData);
   }, [productData, setData]);
 
