@@ -3,7 +3,7 @@ import Products from "./products";
 import SideBar from "./sideBar";
 import { Toaster } from "@/components/ui/toaster";
 import { getData } from "@/api";
-import { IProduct } from "@/types";
+import { IProduct } from "@/Types";
 
 const Panel = () => {
   const { data, isLoading, error } = useSWR<IProduct[]>("products", getData);

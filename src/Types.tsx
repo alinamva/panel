@@ -13,6 +13,7 @@ export interface IProduct {
 export interface IDataProps {
   apiData: IProduct[];
   storedData: IProduct[];
+  allData: IProduct[];
   setIsAddOpen: (isAddOpen: boolean) => void;
 }
 
