@@ -12,13 +12,13 @@ type ProductsProps = {
 };
 
 const Products = ({ productData }: ProductsProps) => {
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const { data: storedData, setData, deletes, adds } = useStore();
 
   useEffect(() => {
     setData(productData);
   }, [productData, setData]);
-  let allData = [...storedData, ...adds];
-  const [isAddOpen, setIsAddOpen] = useState(false);
+  const allData = [...storedData, ...adds];
 
   const handleAddBlock = () => {
     setIsAddOpen(!isAddOpen);

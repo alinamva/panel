@@ -13,27 +13,35 @@ const useStore = create<IStore>((set) => {
     setData: (newData) => set({ data: newData }),
     deleteProduct: (productId: number) => {
       set((state) => {
+        const addedProduct = state.adds.find(
+          (product) => product.id === productId
+        );
+        //  const copyOfAdds = [...state.adds]
+        const updatedAdds = state.adds.filter(
+          (product) => product.id !== productId
+        );
+
         const deletedProduct = state.data.find(
           (product) => product.id === productId
         );
         if (!deletedProduct) {
           return state;
         }
-
         const updatedDeletes = [...state.deletes];
-        const updatedStore = state.data.filter(
-          (product) => product.id !== productId
-        );
-
-        console.log(updatedStore);
+        // const updatedStore = state.data.filter(
+        //   (product) => product.id !== productId
+        // );
+        // console.log(updatedAdds);
         if (!updatedDeletes.includes(deletedProduct)) {
           updatedDeletes.push(deletedProduct);
         }
         localStorage.setItem("deletedData", JSON.stringify(updatedDeletes));
-        localStorage.setItem("storedData", JSON.stringify(updatedStore));
+        // localStorage.setItem("storedData", JSON.stringify(updatedStore));
+        // localStorage.setItem("addedData", JSON.stringify(updatedAdds));
         return {
-          data: updatedStore,
+          // data: updatedStore,
           deletes: updatedDeletes,
+          // adds: updatedAdds,
         };
       });
     },

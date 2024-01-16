@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const SideBar = () => {
   const Navs = [
     { name: "Dashboard", icon: dashboard, link: "/panel" },
-    { name: "Products", icon: products, link: "/panel" },
+    { name: "Products", icon: products, link: "/cards" },
     { name: "Chat", icon: chat, link: "/panel" },
     { name: "Email", icon: email, link: "/panel" },
     { name: "Settings", icon: settings, link: "/panel" },
