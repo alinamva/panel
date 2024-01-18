@@ -6,11 +6,18 @@ const useStore = create<IStore>((set) => {
   const listOfDeletes = deletedData ? JSON.parse(deletedData) : [];
 
   const addedData = localStorage.getItem("addedData");
-  const listOfAdds = addedData ? JSON.parse(addedData) : [];
+  const listOfAdds = addedData ? (JSON.parse(addedData) as IProduct[]) : [];
   return {
     data: [],
     deletes: listOfDeletes,
-    setData: (newData) => set({ data: [...newData, ...listOfAdds] }),
+    setData: (newData) =>
+      set(() => {
+        const checkedNewData = newData.filter((product) => !deletedData?.includes(JSON.stringify(product)));
+        const checkedListOfAdds = listOfAdds.filter((product) => !deletedData?.includes(JSON.stringify(product)));
+        return {
+          data: [...checkedNewData, ...checkedListOfAdds],
+        };
+      }),
     deleteProduct: (productId: number) => {
       set((state) => {
         const updatedData = state.data.filter((product) => product.id !== productId);
