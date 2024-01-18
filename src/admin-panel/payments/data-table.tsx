@@ -7,14 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import React from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/store";
@@ -22,17 +15,14 @@ import { useStore } from "@/store";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { IProduct } from "@/Types";
+import { IProduct } from "@/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   allData: TData[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  allData,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, allData }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { deleteProduct, undoDelete } = useStore();
 
@@ -65,12 +55,7 @@ export function DataTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 );
               })}
@@ -80,14 +65,9 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                 ))}
                 <TableCell>
                   <Button
@@ -100,17 +80,13 @@ export function DataTable<TData, TValue>({
                         title: "The product was deleted",
                         description: currentDate.toString(),
                         action: (
-                          <ToastAction
-                            altText="Goto schedule to undo"
-                            onClick={() => undoDelete()}
-                          >
+                          <ToastAction altText="Goto schedule to undo" onClick={() => undoDelete()}>
                             Undo
                           </ToastAction>
                         ),
                       });
                     }}
-                    size="sm"
-                  >
+                    size="sm">
                     <TrashIcon />
                   </Button>
                 </TableCell>
@@ -118,10 +94,7 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="h-24 text-center"
-              >
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 No results.
               </TableCell>
             </TableRow>
@@ -129,20 +102,10 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
       <div className="flex items-center justify-center py-4 space-x-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
+        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
+        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </Button>
       </div>

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { IProduct, IStore } from "./Types";
+import { IProduct, IStore } from "./types";
 
 const useStore = create<IStore>((set) => {
   const deletedData = localStorage.getItem("deletedData");
@@ -10,38 +10,17 @@ const useStore = create<IStore>((set) => {
   return {
     data: [],
     deletes: listOfDeletes,
-    setData: (newData) => set({ data: newData }),
+    setData: (newData) => set({ data: [...newData, ...listOfAdds] }),
     deleteProduct: (productId: number) => {
       set((state) => {
-        const addedProduct = state.adds.find(
-          (product) => product.id === productId
-        );
-        //  const copyOfAdds = [...state.adds]
-        const updatedAdds = state.adds.filter(
-          (product) => product.id !== productId
-        );
+        const updatedData = state.data.filter((product) => product.id !== productId);
+        const updatedAddedData = state.adds.filter((product) => product.id !== productId);
+        localStorage.setItem("addedData", JSON.stringify(updatedAddedData));
 
-        const deletedProduct = state.data.find(
-          (product) => product.id === productId
-        );
-        if (!deletedProduct) {
-          return state;
-        }
-        const updatedDeletes = [...state.deletes];
-        // const updatedStore = state.data.filter(
-        //   (product) => product.id !== productId
-        // );
-        // console.log(updatedAdds);
-        if (!updatedDeletes.includes(deletedProduct)) {
-          updatedDeletes.push(deletedProduct);
-        }
-        localStorage.setItem("deletedData", JSON.stringify(updatedDeletes));
-        // localStorage.setItem("storedData", JSON.stringify(updatedStore));
-        // localStorage.setItem("addedData", JSON.stringify(updatedAdds));
         return {
-          // data: updatedStore,
-          deletes: updatedDeletes,
-          // adds: updatedAdds,
+          data: updatedData,
+          adds: updatedAddedData,
+          // deletes: updatedDeletes,
         };
       });
     },
@@ -65,7 +44,7 @@ const useStore = create<IStore>((set) => {
           updatedAdds.push(newProduct);
         }
         localStorage.setItem("addedData", JSON.stringify(updatedAdds));
-        return { adds: updatedAdds };
+        return { adds: updatedAdds, data: [...state.data, newProduct] };
       });
     },
   };
