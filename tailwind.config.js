@@ -11,6 +11,7 @@ export default {
         lightBlue: "#eaf1ff",
         mainText: "#ffff",
         lightGrey: "#f8f8f8",
+        grey: "#808080",
         destructive: "#7f1d1d",
       },
     },

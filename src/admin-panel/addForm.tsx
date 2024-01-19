@@ -1,4 +1,11 @@
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,9 +23,17 @@ import { IDataProps } from "@/types";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/store";
 
-const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" | "storedData" | "allData">) => {
+const Addform = ({
+  setIsAddOpen,
+  storedData,
+}: Pick<IDataProps, "setIsAddOpen" | "storedData" | "allData">) => {
   const filtered = [...new Set(storedData.map((product) => product.category))];
-  const CategoryEnum = z.enum(["men's clothing", "jewelery", "electronics", "women's clothing"]);
+  const CategoryEnum = z.enum([
+    "men's clothing",
+    "jewelery",
+    "electronics",
+    "women's clothing",
+  ]);
   const formSchema = z.object({
     id: z.number(),
     title: z.string().min(5).max(255),
@@ -32,18 +47,19 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
     }),
   });
 
-  const { addProducts } = useStore();
-
+  const { addProducts, adds, deletes } = useStore();
+  const allData = [...storedData, ...adds, ...deletes];
+  console.log(allData);
+  console.log(allData.length);
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     addProducts(data);
-    console.log(storedData.length);
     setIsAddOpen(false);
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: storedData.length + 1,
+      id: allData.length + 1,
       title: "",
       price: 1,
       description: "",
@@ -61,7 +77,10 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
         <div className="flex flex-col gap-8  t-[50%] l-[50%] z-50 m-auto justify-center p-8 w-96 bg-white rounded-2xl shadow-xl">
           <h2 className="self-center text-xl">Add a product</h2>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-8"
+            >
               <FormField
                 control={form.control}
                 name="title"
@@ -69,7 +88,11 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Title" {...field} required />
+                      <Input
+                        placeholder="Title"
+                        {...field}
+                        required
+                      />
                     </FormControl>
 
                     <FormMessage />
@@ -103,7 +126,11 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input placeholder="Description" {...field} required />
+                      <Input
+                        placeholder="Description"
+                        {...field}
+                        required
+                      />
                     </FormControl>
 
                     <FormMessage />
@@ -117,7 +144,10 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <SelectTrigger className="w-[180px]">
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
@@ -126,7 +156,10 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
                             <SelectLabel>Category</SelectLabel>
                             {filtered.map((product, index) => {
                               return (
-                                <SelectItem value={product} key={index}>
+                                <SelectItem
+                                  value={product}
+                                  key={index}
+                                >
                                   {product}
                                 </SelectItem>
                               );
@@ -142,7 +175,10 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
               />
               <div className="flex justify-end w-full">
                 {" "}
-                <Button variant="secondary" type="submit">
+                <Button
+                  variant="secondary"
+                  type="submit"
+                >
                   Add new product
                 </Button>
               </div>
@@ -152,7 +188,8 @@ const Addform = ({ setIsAddOpen, storedData }: Pick<IDataProps, "setIsAddOpen" |
       </div>
       <div
         className="absolute top-0 left-0 z-40 flex items-center justify-center bg-black/50 size-full"
-        onClick={() => setIsAddOpen(false)}></div>
+        onClick={() => setIsAddOpen(false)}
+      ></div>
     </>
   );
 };

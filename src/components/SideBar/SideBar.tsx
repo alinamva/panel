@@ -1,8 +1,8 @@
-import dashboard from "../assets/dashboard.svg";
-import chat from "../assets/chat.svg";
-import email from "../assets/email.svg";
-import settings from "../assets/settings.svg";
-import products from "../assets/products.svg";
+import dashboard from "../../assets/dashboard.svg";
+import chat from "../../assets/chat.svg";
+import email from "../../assets/email.svg";
+import settings from "../../assets/settings.svg";
+import products from "../../assets/products.svg";
 import { Link } from "react-router-dom";
 const SideBar = () => {
   const Navs = [

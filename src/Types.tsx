@@ -13,6 +13,8 @@ export interface IProduct {
 export interface IDataProps {
   apiData: IProduct[];
   storedData: IProduct[];
+  deletes: IProduct[];
+  adds: IProduct[];
   allData: IProduct[];
   setIsAddOpen: (isAddOpen: boolean) => void;
 }
@@ -23,6 +25,6 @@ export interface IStore {
   adds: IProduct[];
   setData: (newData: IProduct[]) => void;
   deleteProduct: (productId: number) => void;
-  undoDelete: () => void;
+  undoDelete: (productId: number) => void;
   addProducts: (newProduct: IProduct) => void;
 }

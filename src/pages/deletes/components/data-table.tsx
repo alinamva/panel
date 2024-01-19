@@ -16,28 +16,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import React from "react";
-import { TrashIcon } from "@radix-ui/react-icons";
 import { useStore } from "@/store";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+// import { useToast } from "@/components/ui/use-toast";
 import { IProduct } from "@/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  allData: TData[];
+  deletes: TData[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  allData,
+  deletes,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { deleteProduct, undoDelete } = useStore();
+  const { undoDelete } = useStore();
 
   const table = useReactTable({
-    data: allData,
+    data: deletes,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -47,15 +45,14 @@ export function DataTable<TData, TValue>({
       sorting,
     },
   });
-  const { toast } = useToast();
 
-  const date = new Date();
+  //   const date = new Date();
 
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+  //   const day = date.getDate();
+  //   const month = date.getMonth() + 1;
+  //   const year = date.getFullYear();
 
-  const currentDate = `${day}-${month}-${year}`;
+  //   const currentDate = `${day}-${month}-${year}`;
   return (
     <div className="border rounded-md ">
       <Table>
@@ -91,27 +88,15 @@ export function DataTable<TData, TValue>({
                 ))}
                 <TableCell>
                   <Button
-                    variant="destructive"
+                    variant="dark"
                     onClick={() => {
                       const product = row?.original as IProduct;
                       const productId = product?.id;
-                      deleteProduct(productId);
-                      toast({
-                        title: "The product was deleted",
-                        description: currentDate.toString(),
-                        action: (
-                          <ToastAction
-                            altText="Goto schedule to undo"
-                            onClick={() => undoDelete(productId)}
-                          >
-                            Undo
-                          </ToastAction>
-                        ),
-                      });
+                      undoDelete(productId);
                     }}
                     size="sm"
                   >
-                    <TrashIcon />
+                    Undo
                   </Button>
                 </TableCell>
               </TableRow>
